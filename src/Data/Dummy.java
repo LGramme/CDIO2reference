@@ -8,7 +8,7 @@ public class Dummy implements IDatabaseAccess {
     Map<Integer,String> user;
     Map<Integer,String> batch;
 
-    Dummy(){
+    public Dummy(){
         user = new HashMap<>();
         user.put(12,"Anders And");
         batch = new HashMap<>();

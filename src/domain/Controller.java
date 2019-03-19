@@ -1,23 +1,21 @@
 package domain;
 
 import Data.IDatabaseAccess;
+import TechnicalServices.InputHandling;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class Controller {
     Socket socket;
     IDatabaseAccess database;
-    InputStream in;
+    BufferedReader in;
     PrintWriter out;
 
     public Controller(IDatabaseAccess database, String adress, int host) throws IOException {
         socket = new Socket(adress, host);
-        in = socket.getInputStream();
-        out = new PrintWriter(socket.getOutputStream());
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         this.database = database;
     }
 
@@ -40,8 +38,22 @@ public class Controller {
         out.println("T");
     }
 
-    public void getWeight() {
+    public double getWeight() throws IOException {
         out.println("S");
+        out.flush();
+        String str = in.readLine();
+        str = str.split(" ")[6];
+
+        return InputHandling.toNum(str);
+    }
+
+    public void close() {
+        out.println("Q");
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
