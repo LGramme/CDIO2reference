@@ -6,7 +6,7 @@ import TechnicalServices.InputHandling;
 import java.io.*;
 import java.net.Socket;
 
-public class Controller {
+public class Controller implements IController{
     Socket socket;
     IDatabaseAccess database;
     BufferedReader in;
@@ -24,18 +24,20 @@ public class Controller {
         if (operatorNum > 10 && operatorNum < 100) {
             result = database.getOperator(operatorNum);
         } else {
-            return "OperatorNumber out of bounds(11-99)";
+            throw new IllegalArgumentException("Illegal argument. Operator number has to be within the range 11-99");
         }
 
         if (result != null) {
             return result;
         } else {
-            return "Unknown user";
+            throw new RuntimeException("Unknown user");
         }
     }
 
-    public void tare(){
+    public void tare() throws IOException {
         out.println("T");
+        out.flush();
+        in.readLine();
     }
 
     public double getWeight() throws IOException {
@@ -54,6 +56,12 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean checkWighing(double tara, double netto, double brutto) {
+        double sum = tara + netto;
+
+        return  (Math.round(sum + brutto) == 0);
     }
 
 }

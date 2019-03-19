@@ -12,7 +12,7 @@ public class InputHandling {
         Boolean output = false;
 
         for (int e = 0; e < input.length(); e++) {
-            if (input.charAt(e) <= '9' && '0' <= input.charAt(e) || input.charAt(e) == '.')
+            if (input.charAt(e) <= '9' && '0' <= input.charAt(e) || input.charAt(e) == '.' || input.charAt(e) == '-')
                 output = true;
             else
                 return false;
@@ -29,15 +29,19 @@ public class InputHandling {
         if (isNumber(value)) {
             int count = 0;
             int comma = 0;
+            boolean isNegative = false;
             for (int i = 0; i < value.length(); i++) {
-                if (value.charAt(i) != '.') {
+                if (value.charAt(i) == '.') {
+                    comma = -(value.length() - count);
+                } else if (value.charAt(i) == '-'){
+                    isNegative = true;
+                } else {
                     var += (Math.pow(10d, (double) (value.length() - count - 1))) * (value.charAt(i) - '0');
                     count++;
-                } else {
-                    comma = -(value.length() - count);
                 }
             }
             var *= Math.pow(10d, (double) comma);
+            if (isNegative) var *= -1;
             return var;
         } else {
             throw new IllegalArgumentException("String, doesn't represent a number");

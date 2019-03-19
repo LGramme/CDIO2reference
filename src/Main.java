@@ -2,6 +2,7 @@ import Data.Dummy;
 import Data.IDatabaseAccess;
 import UI.TUI;
 import domain.Controller;
+import domain.IController;
 
 import java.io.IOException;
 
@@ -11,9 +12,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         IDatabaseAccess db = new Dummy();
-        Controller con = new Controller(db, adress, host);
+        IController con = new Controller(db, adress, host);
         TUI tui = new TUI(con);
-        System.out.println(con.getWeight());
-        //tui.run();
+        tui.run();
     }
 }

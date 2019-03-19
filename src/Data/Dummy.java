@@ -11,6 +11,7 @@ public class Dummy implements IDatabaseAccess {
     public Dummy(){
         user = new HashMap<>();
         user.put(12,"Anders And");
+
         batch = new HashMap<>();
         batch.put(1234,"Salt");
     }
